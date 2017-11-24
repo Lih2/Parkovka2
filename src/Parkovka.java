@@ -8,59 +8,76 @@ public class Parkovka {
 
     public static void main(String[] args) {
 
-        Parkovka parkovkatest = new Parkovka(5);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Parkovka parkovkatest = new Parkovka(5,2);
 
-        try {
+        ////// Test Variant 1
+        for(int i=0;i<5;i++)
+            parkovkatest.park(String.valueOf(i),1);
 
-            while(true) {
-                String line=reader.readLine();
-                if( line.equals("exit")) break;
+        for(int i=5;i<7;i++)
+            parkovkatest.park(String.valueOf(i),2);
 
-                String[] actions;
-                actions=line.split(":");
+        for(int i=0; i<7; i++)
+            parkovkatest.unpark(String.valueOf(i));
 
-                if( actions[0].equals("add") ) {
-                    if (parkovkatest.park(actions[1])) {
-                        System.out.println("Машина с номером " + actions[1] + " Припаркована");
-                        System.out.println("Всего Машин на парковке " + parkovkatest.numcars());
-                    } else {
-                        System.out.println("Машину с номером " + actions[1] + " Припарковать не удалось - нет мест");
-                        System.out.println("Всего Машин на парковке " + parkovkatest.numcars());
-                    }
-                }
-                else if( actions[0].equals("del") ) {
-                    parkovkatest.unpark(actions[1]);
-                    System.out.println("Машина с номером " + actions[1] + " Выехала с парковки");
-                    System.out.println("Всего Машин на парковке " + parkovkatest.numcars());
-                }
+        ////// Test Variant 2
+        for(int i=0;i<9;i++)
+            parkovkatest.park(String.valueOf(i),1);
+
+        for(int i=0; i<7; i++)
+            parkovkatest.unpark(String.valueOf(i));
+
+
+        ////// Test Variant 3
+        for(int i=0;i<7;i++)
+            parkovkatest.park(String.valueOf(i),2);
+
+        for(int i=0; i<7; i++)
+            parkovkatest.unpark(String.valueOf(i));
+
+
+
+    }
+
+    private int maxnumberCars;
+    private int maxnumberTrucks;
+
+    private HashSet<String> carPlaces = new HashSet<>(); // список легковых мест
+    private HashSet<String> truckPlaces = new HashSet<>(); // список грузовых мест
+
+    public Parkovka(int maxnumberCars, int maxnumberTrucks ) {
+        this.maxnumberCars=maxnumberCars;
+        this.maxnumberTrucks=maxnumberTrucks;
+    }
+
+    public synchronized boolean park(String carnumber, int type) {
+
+        if( type == 2 ) { // грузовой автомобиль
+            if( truckPlaces.size() ==  maxnumberTrucks ) return false; // мест нет
+            truckPlaces.add(carnumber);
+            return true;
+        }
+        else if( type == 1 ) { // легковой автомобиль
+
+            if( carPlaces.size() <  maxnumberCars ) { // автомобильные места есть
+                carPlaces.add(carnumber);
+                return true;
             }
-        }
-        catch(IOException e) {
+            if( truckPlaces.size() ==  maxnumberTrucks ) return false; // грузовых мест нет
+
+            // проверяем на всякий случай не парковали ли машину раннее
+            if( carPlaces.contains(carnumber) || truckPlaces.contains(carnumber) ) return false;
+            truckPlaces.add(carnumber);
+            return false;
 
         }
 
+        return false;
 
-
-    }
-
-    private int maxnumber; // максимальное количество мест на парковке
-    private HashSet<String> cars = new HashSet<>(); // список машин
-
-    public Parkovka(int maxnumber) {
-        this.maxnumber=maxnumber;
-    }
-
-    public synchronized int numcars() {
-        return cars.size();
-    }
-    public synchronized boolean park(String carnumber) {
-
-        if( cars.size() == maxnumber ) return false; // месm на парковке больше нет
-        cars.add(carnumber);
-        return true;
     }
     public synchronized void unpark(String carnumber) {
-        cars.remove(carnumber);
+        carPlaces.remove(carnumber);
+        truckPlaces.remove(carnumber);
     }
 }
+
