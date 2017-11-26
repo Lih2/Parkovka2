@@ -81,7 +81,7 @@ public class Parkovka {
         return false;
 
     }
-    public synchronized float unpark(String carnumber, int hoursFinish ) throws Exception {
+    public synchronized int unpark(String carnumber, int hoursFinish ) throws Exception {
 
         Integer hoursBegin = carPlaces.get(carnumber);
         if( hoursBegin == null  )
@@ -126,7 +126,7 @@ public class Parkovka {
             this.timeNight2=timeNight2;
         }
 
-        public float getTotalCost(int hoursBegin, int hoursFinish) throws Exception { // Расширенный метод под несколько суток
+        public int getTotalCost(int hoursBegin, int hoursFinish) throws Exception { // Расширенный метод под несколько суток
 
             if(hoursFinish < hoursBegin) throw new Exception();
             if( hoursBegin == hoursFinish) return 0;
@@ -135,7 +135,7 @@ public class Parkovka {
             int daysFinish=(int)(hoursFinish/24);
             int daysDiff = daysFinish - daysBegin; // сколько неполных суток
 
-            float sum=0;
+            int sum=0;
 
             if( daysDiff == 0 ) { // одни сутки
                 sum=getCostBetween(hoursBegin,hoursFinish );
@@ -153,8 +153,6 @@ public class Parkovka {
 
         public int getCostBetween(int hoursBegin, int hoursFinish ) throws Exception { // Метод для одних суток
             if(hoursFinish < hoursBegin) throw new Exception();
-            int fin=getCostForHour(hoursFinish);
-            int beg=getCostForHour(hoursBegin);
             return getCostForHour(hoursFinish) - getCostForHour(hoursBegin);
         }
         private int getCostForHour(int hour) { // Стоимость выезда с начала суток
