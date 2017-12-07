@@ -1,0 +1,30 @@
+<project name="Parkovka2" default="all" >
+
+
+   <target name="init">
+      <property name="source" value="src" />
+      <property name="build" value="build" />
+      <property name="classes" value="${build}/classes" />
+    </target>
+
+     <target name="make.dirs" description="Make build dirs" depends="init">
+       <mkdir dir="${build}"/>
+       <mkdir dir="${classes}"/>
+     </target>
+
+     <target name="compile" description="compile java"  depends="make.dirs">
+       <javac destdir="${classes}">
+       <src path="${source}"/>
+       </javac>
+     </target>
+		
+    <target name="make.jar" description="make jar file" depends="compile">
+      <jar destfile="parkovka2.jar">
+      <fileset dir="${classes}">
+      </fileset>
+      </jar>
+    </target>		
+		
+     <target name="all" description="Do the build"  depends="make.jar"/>
+		
+  </project>

@@ -32,9 +32,13 @@ public class Parkovka {
 
         try {
             float price = parkovkatest.unpark("AAA", 55);
+            System.out.println("AAA " + "Цена " + price);
             price = parkovkatest.unpark("BBB", 8);
+            System.out.println("BBB " + "Цена " + price);
             price = parkovkatest.unpark("CCC", 22);
+            System.out.println("CCC " + "Цена " + price);
             price = parkovkatest.unpark("DDD", 52);
+            System.out.println("DDD " + "Цена " + price);
         }
         catch (Exception e) {
             e.printStackTrace();
