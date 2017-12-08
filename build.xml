@@ -1,6 +1,5 @@
 <project name="Parkovka2" default="all" >
 
-
    <target name="init">
       <property name="source" value="src" />
       <property name="build" value="build" />
@@ -18,13 +17,21 @@
        </javac>
      </target>
 		
-    <target name="make.jar" description="make jar file" depends="compile">
+    <target name="build" description="make jar file" depends="compile">
       <jar destfile="parkovka2.jar">
       <fileset dir="${classes}">
       </fileset>
       </jar>
-    </target>		
+    </target>	
+
+   <target name="jar" depends="build">
+    <jar destfile="parkovka2.jar" basedir="${classes}">
+        <manifest>
+            <attribute name="Main-Class" value="Parkovka" />
+        </manifest>
+    </jar>
+</target>	
 		
-     <target name="all" description="Do the build"  depends="make.jar"/>
+     <target name="all" description="Do the build"  depends="jar"/>
 		
   </project>
