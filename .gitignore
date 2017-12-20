@@ -9,3 +9,5 @@ build/
 !pom.xml
 *.properties
 .gradle/
+!gradle-wrapper.properties
+!gradle-wrapper.jar
