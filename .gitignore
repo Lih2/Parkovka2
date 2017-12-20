@@ -8,3 +8,7 @@ build/
 !build.xml
 !pom.xml
 *.properties
+.gradle/
+gradle/
+gradlew.bat
+gradlew
